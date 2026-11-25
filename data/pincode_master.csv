@@ -1,0 +1,21 @@
+pincode,city,state,tier,base_rto_risk
+110001,New Delhi,Delhi,Tier-1,0.12
+400001,Mumbai,Maharashtra,Tier-1,0.1
+560001,Bengaluru,Karnataka,Tier-1,0.09
+600001,Chennai,Tamil Nadu,Tier-1,0.11
+700001,Kolkata,West Bengal,Tier-1,0.16
+500001,Hyderabad,Telangana,Tier-1,0.11
+302001,Jaipur,Rajasthan,Tier-2,0.22
+226001,Lucknow,Uttar Pradesh,Tier-2,0.26
+411001,Pune,Maharashtra,Tier-2,0.14
+380001,Ahmedabad,Gujarat,Tier-2,0.15
+452001,Indore,Madhya Pradesh,Tier-2,0.2
+800001,Patna,Bihar,Tier-2,0.31
+247001,Saharanpur,Uttar Pradesh,Tier-3,0.42
+842001,Muzaffarpur,Bihar,Tier-3,0.45
+324001,Kota,Rajasthan,Tier-3,0.28
+282001,Agra,Uttar Pradesh,Tier-3,0.38
+826001,Dhanbad,Jharkhand,Tier-3,0.4
+781001,Guwahati,Assam,Tier-3,0.34
+141001,Ludhiana,Punjab,Tier-3,0.25
+201301,Noida,Uttar Pradesh,Tier-1,0.14

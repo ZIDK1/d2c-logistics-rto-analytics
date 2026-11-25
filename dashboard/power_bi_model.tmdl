@@ -1,0 +1,65 @@
+createOrReplace
+
+ref table rto_scored_orders
+
+	measure 'Total Orders' = COUNTROWS('rto_scored_orders')
+		formatString: #,##0
+
+	measure 'RTO Orders' = CALCULATE(COUNTROWS('rto_scored_orders'), 'rto_scored_orders'[rto_flag] = 1)
+		formatString: #,##0
+
+	measure 'Gross Merchandise Value' = SUM('rto_scored_orders'[gross_order_value])
+		formatString: "₹"#,##0
+
+	measure 'Realized Revenue' = SUM('rto_scored_orders'[realized_revenue])
+		formatString: "₹"#,##0
+
+	measure 'Dead Freight Loss' = SUM('rto_scored_orders'[total_logistics_loss])
+		formatString: "₹"#,##0
+
+	measure 'Net Margin' = [Realized Revenue] - [Dead Freight Loss]
+		formatString: "₹"#,##0
+
+	measure 'Overall RTO Rate %' = DIVIDE([RTO Orders], [Total Orders], 0)
+		formatString: 0.00%
+
+	measure 'COD RTO Rate %' = DIVIDE(CALCULATE(COUNTROWS('rto_scored_orders'), 'rto_scored_orders'[rto_flag] = 1, 'rto_scored_orders'[payment_method] = "COD"), CALCULATE(COUNTROWS('rto_scored_orders'), 'rto_scored_orders'[payment_method] = "COD"), 0)
+		formatString: 0.00%
+
+	measure 'Prepaid RTO Rate %' = DIVIDE(CALCULATE(COUNTROWS('rto_scored_orders'), 'rto_scored_orders'[rto_flag] = 1, 'rto_scored_orders'[payment_method] <> "COD"), CALCULATE(COUNTROWS('rto_scored_orders'), 'rto_scored_orders'[payment_method] <> "COD"), 0)
+		formatString: 0.00%
+
+	measure 'COD Risk Disparity' = DIVIDE([COD RTO Rate %], [Prepaid RTO Rate %], 0)
+		formatString: 0.0"x"
+
+	measure 'Carrier SLA Breach Rate %' = DIVIDE(CALCULATE(COUNTROWS('rto_scored_orders'), 'rto_scored_orders'[sla_breached] = 1), [Total Orders], 0)
+		formatString: 0.0%
+
+	measure 'Delayed RTO Rate %' = DIVIDE(CALCULATE(COUNTROWS('rto_scored_orders'), 'rto_scored_orders'[rto_flag] = 1, 'rto_scored_orders'[sla_breached] = 1), CALCULATE(COUNTROWS('rto_scored_orders'), 'rto_scored_orders'[sla_breached] = 1), 0)
+		formatString: 0.0%
+
+	measure 'On-Time RTO Rate %' = DIVIDE(CALCULATE(COUNTROWS('rto_scored_orders'), 'rto_scored_orders'[rto_flag] = 1, 'rto_scored_orders'[sla_breached] = 0), CALCULATE(COUNTROWS('rto_scored_orders'), 'rto_scored_orders'[sla_breached] = 0), 0)
+		formatString: 0.0%
+
+	measure 'High Risk Orders' = CALCULATE(COUNTROWS('rto_scored_orders'), 'rto_scored_orders'[risk_tier] = "High Risk")
+		formatString: #,##0
+
+	measure 'Preventable Freight Loss' = SUM('rto_scored_orders'[preventable_loss_inr])
+		formatString: "₹"#,##0
+
+	measure 'Projected Freight Savings' = [Preventable Freight Loss] * DIVIDE(SELECTEDVALUE('Policy_Conversion_Rate'[Value], 60), 100, 0)
+		formatString: "₹"#,##0
+
+	measure 'Projected Margin Expansion %' = DIVIDE([Projected Freight Savings], [Net Margin], 0)
+		formatString: +0.00%;-0.00%;0.00%
+
+table 'Policy_Conversion_Rate'
+	column Value
+		dataType: int64
+		formatString: 0"%"
+		summarizeBy: none
+		sourceColumn: Value
+
+	partition 'Policy_Conversion_Rate' = calculated
+		mode: import
+		source = GENERATESERIES(0, 100, 5)
