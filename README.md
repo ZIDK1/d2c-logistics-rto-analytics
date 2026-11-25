@@ -1,6 +1,7 @@
 # D2C E-Commerce Logistics & RTO Analytics
 
 **Author:** Zaid Kaiser ([zaidkaiser2006@gmail.com](mailto:zaidkaiser2006@gmail.com))  
+**Live Dashboard:** [https://zidk1.github.io/d2c-logistics-rto-analytics/](https://zidk1.github.io/d2c-logistics-rto-analytics/)  
 **Stack:** Python 3.12, SQLite / PostgreSQL SQL, Django 5.2, Microsoft Power BI (DAX / TMDL)  
 **Benchmark Reference:** Problem framing inspired by [Kaggle: E-Commerce Return Abuse Detection Dataset](https://www.kaggle.com/datasets/sarveshchhetri/e-commerce-return-abuse-detection-dataset/data)
 
@@ -14,6 +15,18 @@ This project implements an analytical pipeline and interactive BI dashboard over
 - Quantifies **INR 22.28 Lakhs** in dead logistics loss out of **INR 4.43 Cr** gross merchandise value (GMV).
 - Runs relational SQL analytics (CTEs, window functions, `LAG()`, Pareto running sums) in SQLite.
 - Scores incoming orders in real time using chronological customer and pincode return history to isolate **INR 17.17 Lakhs** in preventable COD loss across **9,088 high-risk orders**.
+
+---
+
+## Dashboard Preview
+
+| Overview & Financial Impact | Regional Pareto (80/20) |
+| :---: | :---: |
+| ![Overview Dashboard](screenshots/01_overview.png) | ![Regional Pareto Chart](screenshots/02_regional_pareto.png) |
+
+| Carrier SLA & Delay Attribution | Policy Simulator & Dispatch Queue |
+| :---: | :---: |
+| ![Carrier SLA Performance](screenshots/03_carrier_sla.png) | ![Policy Simulator & Queue](screenshots/04_policy_simulator.png) |
 
 ---
 
@@ -62,6 +75,7 @@ This project implements an analytical pipeline and interactive BI dashboard over
 │   ├── power_bi_model.tmdl              # TMDL script (17 DAX measures + What-If table)
 │   ├── power_bi_corporate_theme.json    # Importable Power BI corporate light theme
 │   └── Power_BI_Implementation_Guide.md # Power BI Desktop model & visual checklist
+├── screenshots/                         # Dashboard previews & MP4 walkthrough
 ├── index.html                           # Unified dashboard (works offline & via live server)
 └── run_pipeline.py                      # Pipeline runner & local server (`--serve`)
 ```
